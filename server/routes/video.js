@@ -39,11 +39,12 @@ router.post('/thumbnail', (req, res) => {
     let thumbFilePath = "";
     let fileDuration = "";
 
+    console.log("fucking request", req);
+
     ffmpeg.ffprobe(req.body.filePath, (err, metadata) => {
         console.dir(metadata);
         console.log(metadata.format.duration);
         fileDuration = metadata.format.duration;
-        
     });
 
     ffmpeg(req.body.filePath)
