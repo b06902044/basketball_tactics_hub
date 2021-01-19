@@ -8,7 +8,7 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "start": "mkdir uploads && node server/index.js",
+    "start": "mkdir uploads && mkdir uploads/thumbnails && node server/index.js",
     "server": "nodemon server/index.js",
     "client": "cd client && npm start",
     "dev": "concurrently --kill-others-on-fail \"npm run client\" \"npm run server\"",
