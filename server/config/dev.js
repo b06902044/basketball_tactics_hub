@@ -1,3 +1,3 @@
 module.exports = {
-    mongoURI: 'mongodb://localhost:27017/final_project'
+    mongoURI: 'mongodb+srv://yang:basketball30@cluster0.6ryji.mongodb.net/TacticHub?retryWrites=true&w=majority'
 }
