@@ -197,10 +197,11 @@ function CreateTacticPage() {
                     return (
                         <g>
                             <PlayerBall x = {0} y = {0} color = {player.color} ball = {player.ball} name = {player.name} offset = {2.5}/>
-                            <set attributeName="visibility"  to = "hidden" begin = "0s"  fill="freeze" />
+                            
+                            <animate attributeName="visibility" to="hidden" begin = "0s" fill = "freeze"/>
                             <animate id = {`vis${frame_id}p${player_id}`} dur={`1ms`} attributeName="visibility" from="hidden" to="visible" begin = {`${(frame_id) * frameRate}s`} repeatCount="0" fill="freeze" />
                             <animateMotion id = {`move${frame_id}p${player_id}`} path = {player.path} dur = {`${frameRate}s`} begin = {`vis${frame_id}p${player_id}.end`} fill = "freeze"/>
-                            {(frame_id === totalFrame - 1)? null : <set attributeName="visibility"  to="hidden" begin={`move${frame_id}p${player_id}.end`}  fill="freeze" />}
+                            {(frame_id === totalFrame - 1)? null : <animate attributeName="visibility" to="hidden" begin={`move${frame_id}p${player_id}.end`}  fill="freeze" />}
                         </g>
                     )
                 })
@@ -249,19 +250,19 @@ function CreateTacticPage() {
     }
 
     return (
-        <div className = "my-3" style = {{width: "100%", height: `${viewSize.windowHeight}px`}}>
-                <div id = "control-btn-section" className = "d-flex" style = {{padding: `0 ${viewSize.windowWidth * 0.15}px`, margin: "15px 0"}}>
+        <div className = "" style = {{width: "100%", height: `${viewSize.windowHeight}px`}}>
+                <div id = "control-btn-section" className = "d-flex" style = {{padding: `0 ${viewSize.windowWidth * 0.15}px`, margin: "0 0"}}>
                     {end?   <h3 className = "align-self-center">{totalFrame}</h3>
                                 :
                             <h3 className = "align-self-center">{`${currentFrame} /  ${totalFrame}`}</h3>         
                     }
                     {play? 
-                    <FaPause className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {handlePause}/>
+                    <FaPause className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {handlePause}/>
                         :
-                    <FaPlay className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {handlePlay}/>
+                    <FaPlay className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {handlePlay}/>
                     }
-                    <FaStop className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {handleStop} />
-                    <FaPlus className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {increaseCurrentFrame}/>
+                    <FaStop className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {handleStop} />
+                    <FaPlus className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {increaseCurrentFrame}/>
                 </div>
                 <svg viewBox = {`0 0 ${viewSize.courtWidth} ${viewSize.courtHeight}`} id = "svg" >
                     <image href = {court} x = "0" y = "0" width = {`${viewSize.courtWidth}px`} height = {`${viewSize.courtHeight * 0.8}px`} />
