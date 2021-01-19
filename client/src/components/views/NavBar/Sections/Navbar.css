@@ -1,0 +1,90 @@
+@import '~antd/dist/antd.css';
+
+.menu {
+  padding: 0 0 0 20px;
+  border-bottom: solid 1px #e8e8e8;
+  overflow: auto;
+  box-shadow: 0 0 30px #f3f1f1;
+  background-color: white;
+}
+
+.menu__logo {
+  width: 100px;
+  float: left;
+  margin: 0px 15px;
+}
+
+.menu__logo a {
+  display: inline-block;
+  font-size: 20px;
+  margin: 15px 20px;
+}
+
+.menu_right{
+  margin: 10px 0;
+  padding: 0 0 0 5%;
+}
+
+
+
+.menu__mobile-button {
+  float: left;
+  height: 25px;
+  width: 25px;
+  margin: 19px 20px;
+  display: none !important; /* use of important to overwrite ant-btn */
+}
+
+.menu_drawer .ant-drawer-body {
+  padding: 40px 5px !important;
+}
+
+/* align header of Drawer with header of page */
+.menu_drawer .ant-drawer-header {
+  padding: 0px 0px !important;
+}
+
+.menu__mobile-button {
+  display: inline-block !important;
+}
+
+form input {
+  width: 100%;
+}
+form button {
+  width: 10%;
+}
+
+
+@media (max-width: 845px) {
+  .menu__mobile-button {
+    display: inline-block !important;
+  }
+
+  .menu {
+    padding: 0px;
+  }
+
+  .menu_right {
+    display: none;
+  }
+  .menu__logo a {
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .menu__logo {
+    margin: 0px 0px;
+    width: 60px;
+  }  
+  .menu__logo a {
+    display: inline-block;
+    font-size: 20px;
+    margin: 15px 0px;
+  }
+  form button {
+    margin-left: 10px;
+  }
+}
+

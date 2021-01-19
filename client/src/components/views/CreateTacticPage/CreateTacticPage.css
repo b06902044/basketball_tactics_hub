@@ -1,0 +1,36 @@
+.player_btn :hover {
+    cursor: pointer;
+    
+}
+
+.control_btn :hover{
+    cursor: pointer;
+}
+
+.player_name {
+    user-select: none;
+    font-weight: 700;
+}
+
+#control-btn-section {
+    width: 100%;
+    height: 10vh;
+}
+
+.control-btn {
+    width: "10%";
+    height: "10%";
+    margin: 0 1vw;
+}
+
+.fixed_player_btn {
+    user-select: none;
+    opacity: 0.5;
+}
+
+.path {
+    stroke-width : 2px;
+    user-select: none;
+    stroke-dasharray: 5px;
+    fill: transparent;
+}
