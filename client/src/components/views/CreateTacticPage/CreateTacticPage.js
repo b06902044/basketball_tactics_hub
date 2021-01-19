@@ -209,9 +209,9 @@ function CreateTacticPage() {
         setPlay(true);
         document.getElementById("svg").unpauseAnimations();
         if(timer === null){
-            const t = setInterval(interval, frameRate * 1000);
-            console.log("settimer", t);
-            setTimer(t);
+            //const t = setInterval(interval, frameRate * 1000);
+            //console.log("settimer", t);
+            //setTimer(t);
         }
     }
 
@@ -230,7 +230,7 @@ function CreateTacticPage() {
         setPlay(false);
         document.getElementById("svg").pauseAnimations();
         console.log(timer);
-        clearInterval(timer);
+        //clearInterval(timer);
         setTimer(null);
         console.log("cleartimer");
     }
@@ -239,7 +239,7 @@ function CreateTacticPage() {
         console.log("stop");
         console.log(timer);
         if(timer){
-            clearInterval(timer);
+            //clearInterval(timer);
             setTimer(null);
             console.log("cleartimer");
         }
