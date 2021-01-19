@@ -191,6 +191,7 @@ function CreateTacticPage() {
         if(end){
             setCurrentFrame(0);
             document.getElementById("svg").setCurrentTime(0);
+            document.getElementById("svg").pauseAnimations();
             setVideo(videoInfo.map((frame, frame_id) => {
                 return frame.map((player, player_id) => {
                     return (
