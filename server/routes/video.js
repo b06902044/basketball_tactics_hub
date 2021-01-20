@@ -27,8 +27,8 @@ const upload = multer({ storage: storage }).single('file');
 
 router.post('/uploadfiles', (req, res) => {
     upload(req, res, err => {
+        console.log("res", res);
         if(err){
-            console.log("res", res);
             console.log("err" , err);
             return res.json({success: false, err});
         }
@@ -46,13 +46,13 @@ router.post('/thumbnail', (req, res) => {
         console.log(duration);
         fileDuration = duration;
     })
-    
+    */
     ffmpeg.ffprobe(req.body.filePath, (err, metadata) => {
         console.dir(metadata);
         console.log(metadata.format.duration);
         fileDuration = metadata.format.duration;
     });
-    */
+    
     ffmpeg(req.body.filePath)
         .on('filenames', filenames => {
             console.log('Will generate ' + filenames.join(', '));

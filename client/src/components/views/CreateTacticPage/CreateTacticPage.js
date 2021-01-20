@@ -57,20 +57,27 @@ function CreateTacticPage() {
 
     function handlePointerDown(event, team, player){
         event.preventDefault();
+        console.log("down");
         const pos = [...position];
         pos[team][player].dragging = true;
         setPosition(pos);
     }
 
-    function handlePointerMove(event, team, player){
+    function handlePointerMove(event, team, player, mobile){
         event.preventDefault();
         if(!position[team][player].dragging)    return;
 
         console.log("mousemove")
         const pos = [...position];
         const CTM = document.getElementById("svg").getScreenCTM();
-        pos[team][player].x = (event.clientX - CTM.e) / CTM.a;
-        pos[team][player].y = (event.clientY - CTM.f) / CTM.d;
+        if(mobile){
+            pos[team][player].x = ((event.targetTouches[0] ? event.targetTouches[0].clientX : event.changedTouches[event.changedTouches.length-1].clientX) - CTM.e) / CTM.a;
+            pos[team][player].y = ((event.targetTouches[0] ? event.targetTouches[0].clientY : event.changedTouches[event.changedTouches.length-1].clinetY) - CTM.f) / CTM.d;
+        }
+        else{
+            pos[team][player].x = (event.clientX - CTM.e) / CTM.a;
+            pos[team][player].y = (event.clientY - CTM.f) / CTM.d;
+        }
         pos[team][player].hasMoved = true;
         setPosition(pos);
         
@@ -83,6 +90,7 @@ function CreateTacticPage() {
                                            className = "path" style = {{stroke: pos[team][player].color}} />
             setAnimation(ani);
         }
+        event.preventDefault();
     }
 
     function handlePointerUp(event, team, player){
@@ -130,7 +138,9 @@ function CreateTacticPage() {
     const player_section = position.map((team, team_id) => {
         return team.map((player , player_id) => {
             return (
-                <g className = "player_btn" data-draggable = "1" data-long-touchable = "1" data-on-top-when-touched = "1" onMouseDown = {e => handlePointerDown(e, team_id, player_id)}  onMouseMove = {e => handlePointerMove(e, team_id, player_id)} onMouseUp = {e => handlePointerUp(e, team_id, player_id)} >
+                <g className = "player_btn" data-draggable = "1" data-long-touchable = "1" data-on-top-when-touched = "1" 
+                    onTouchStart = {e => handlePointerDown(e, team_id, player_id)}  onTouchMove = {e => handlePointerMove(e, team_id, player_id, true)} onTouchEnd = {e => handlePointerUp(e, team_id, player_id)} 
+                    onMouseDown = {e => handlePointerDown(e, team_id, player_id)}  onMouseMove = {e => handlePointerMove(e, team_id, player_id, false)} onMouseUp = {e => handlePointerUp(e, team_id, player_id) }>
                     <PlayerBall x = {`${position[team_id][player_id].x}`} y = {`${position[team_id][player_id].y}`} color = {player.color} name = {player.name} ball = {player.ball} offset = {0}/>
                 </g>
             )
@@ -151,15 +161,21 @@ function CreateTacticPage() {
         setAnimation(ani);
     }
 
-    function handleControlPointMove(event, team, player, point){
+    function handleControlPointMove(event, team, player, point, mobile){
         event.preventDefault();
         if(!animation[team][player][point].dragging)    return;
 
         console.log("ctrlmousemove")
         const ani = [...animation];
         const CTM = document.getElementById("svg").getScreenCTM();
-        ani[team][player][point].x = (event.clientX - CTM.e) / CTM.a;
-        ani[team][player][point].y = (event.clientY - CTM.f) / CTM.d;
+        if(mobile){
+            ani[team][player][point].x = ((event.targetTouches[0] ? event.targetTouches[0].clientX : event.changedTouches[event.changedTouches.length-1].clientX) - CTM.e) / CTM.a;
+            ani[team][player][point].y = ((event.targetTouches[0] ? event.targetTouches[0].clientY : event.changedTouches[event.changedTouches.length-1].clientY) - CTM.f) / CTM.d;
+        }
+        else{
+            ani[team][player][point].x = (event.clientX - CTM.e) / CTM.a;
+            ani[team][player][point].y = (event.clientY - CTM.f) / CTM.d;
+        }
         
         ani[team][player].path = <path d = {`M${ani[team][player].x} ${ani[team][player].y} C${ani[team][player].ctrl_pt1.x} ${ani[team][player].ctrl_pt1.y},${ani[team][player].ctrl_pt2.x} ${ani[team][player].ctrl_pt2.y}, ${position[team][player].x} ${position[team][player].y}`}
                                            className = "path" style = {{stroke: ani[team][player].color}} />
@@ -180,8 +196,8 @@ function CreateTacticPage() {
         return team.filter(player => { return (player.path);}).map(player => {
             return (
                 <React.Fragment>
-                    <ControlPoint x = {player.ctrl_pt1.x} y = {player.ctrl_pt1.y} color = {player.color} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt1")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt1")} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt1")}/>
-                    <ControlPoint x = {player.ctrl_pt2.x} y = {player.ctrl_pt2.y} color = {player.color} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt2")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt2")} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt2")}/>
+                    <ControlPoint x = {player.ctrl_pt1.x} y = {player.ctrl_pt1.y} color = {player.color} onTouchStart = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt1")}  onTouchMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt1", true)} onTouchEnd = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt1")} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt1")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt1", false)} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt1")}/>
+                    <ControlPoint x = {player.ctrl_pt2.x} y = {player.ctrl_pt2.y} color = {player.color} onTouchStart = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt2")}  onTouchMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt2", true)} onTouchEnd = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt2")} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt2")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt2", false)} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt2")}/>
                 </React.Fragment> 
             )
         })
@@ -250,7 +266,7 @@ function CreateTacticPage() {
     }
 
     return (
-        <div className = "" style = {{width: "100%", height: `${viewSize.windowHeight}px`}}>
+        <div className = "" style = {{width: "100%", height: `${viewSize.windowHeight}px` , overflow: "hidden", position: "fixed"}}>
                 <div id = "control-btn-section" className = "d-flex" style = {{padding: `0 ${viewSize.windowWidth * 0.15}px`, margin: "0 0"}}>
                     {end?   <h3 className = "align-self-center">{totalFrame}</h3>
                                 :

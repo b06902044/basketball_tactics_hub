@@ -10,7 +10,7 @@ function VideoCard({video}) {
             <div className = "card" style = {{border: "none"}}>
                 <a href = {`/video/${video._id}`}>
                     <div style={{ position: 'relative' }}>
-                        <img class="card-img-top img-fluid" src = {`http://localhost:5000/${video.thumbnail}`} alt = "img" />
+                        <img class="card-img-top img-fluid" src = {`http://localhost/${video.thumbnail}`} alt = "img" />
                         <div className=" duration"
                             style={{ bottom: 0, right: 0, position: 'absolute', margin: '4px', 
                             color: '#fff', backgroundColor: 'rgba(17, 17, 17, 0.8)', opacity: 0.8, 

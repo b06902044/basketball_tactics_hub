@@ -48,7 +48,7 @@ function DetailVideoPage(props) {
             <div className = "container-fluid mt-5 mx-3">
                 <div className = "row">
                     <div className="postPage col-lg-9 col-12 mb-3">
-                        <video style={{ width: '100%' }} src={`http://localhost:5000/${video.filePath}`} controls></video>
+                        <video style={{ width: '100%' }} src={`http://localhost/${video.filePath}`} controls></video>
                         <div className = "my-3" style={{ width: '100%' }}>
                             <h4>{video.title}</h4>
                             <div className = "d-flex justify-content-between">

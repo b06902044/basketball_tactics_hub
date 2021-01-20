@@ -113,7 +113,7 @@ function UploadVideoPage(props) {
                     </Dropzone>
                     {(thumbnail !== "")? 
                         <div className = "col-sm-5 col-xs-10" style = {{height: "30vw"}}>
-                            <img src = {`http://localhost:5000/${thumbnail}`} className = "img-fluid" alt = "hi" style = {{height: "100%", width: "100%"}}/>
+                            <img src = {`http://localhost/${thumbnail}`} className = "img-fluid" alt = "hi" style = {{height: "100%", width: "100%"}}/>
                         </div> : null}
                     
                 </div>
