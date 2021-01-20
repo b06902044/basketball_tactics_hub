@@ -5,7 +5,6 @@ const ffmpeg = require('fluent-ffmpeg');
 const { Video } = require('../models/Video');
 const { Subscribe } = require('../models/Subscriber');
 const { route } = require('./users');
-//const ffprobe = require('ffprobe')
 const { getVideoDurationInSeconds } = require('get-video-duration')
 
 const storage = multer.diskStorage({
@@ -39,16 +38,16 @@ router.post('/uploadfiles', (req, res) => {
 
 router.post('/thumbnail', (req, res) => {
     let thumbFilePath = "";
-    let fileDuration = "";
+    let fileDuration = "2.5";
 
     console.log("fucking request", req.body.filePath);
-    
+    /*
     getVideoDurationInSeconds(req.body.filePath).then((duration) => {
         console.log(duration);
         fileDuration = duration;
     })
-     /* 
-    ffprobe(req.body.filePath, (err, metadata) => {
+    
+    ffmpeg.ffprobe(req.body.filePath, (err, metadata) => {
         console.dir(metadata);
         console.log(metadata.format.duration);
         fileDuration = metadata.format.duration;
