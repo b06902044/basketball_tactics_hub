@@ -22,6 +22,7 @@ function LandingPage() {
             <hr className = "mb-3"/>
             <div className = "row">
                 {videos.map((video, idx) => {
+                    console.log("video", video);
                     return <VideoCard video = {video} key = {idx}/>
                 })}
             </div>

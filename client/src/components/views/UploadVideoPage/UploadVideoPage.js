@@ -82,6 +82,7 @@ function UploadVideoPage(props) {
                 }
                 axios.post('/api/video/thumbnail', tmp).then(res => {
                     if(res.data.success){
+                        console.log("receive thumbnail", res.data);
                         setDuration(res.data.fileDuration);
                         setThumbnail(res.data.thumbFilePath);
                     }
@@ -111,11 +112,10 @@ function UploadVideoPage(props) {
                             </div>
                         )}
                     </Dropzone>
-                    {(thumbnail !== "")? 
+                   {(thumbnail !== "")? 
                         <div className = "col-sm-5 col-xs-10" style = {{height: "30vw"}}>
-                            <img src = {`http://localhost/${thumbnail}`} className = "img-fluid" alt = "hi" style = {{height: "100%", width: "100%"}}/>
-                        </div> : null}
-                    
+                            <img src = {`http://140.112.244.57:4000/${thumbnail}`} className = "img-fluid" alt = "hi" style = {{height: "100%", width: "100%"}}/>
+                        </div> : null} 
                 </div>
                 <div className = "form-group my-3">
                     <label htmlFor = "title">Title</label>

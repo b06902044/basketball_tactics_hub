@@ -8,7 +8,7 @@ function SideVideoCard({ video }) {
         <div className = "col-12 d-flex mb-5">
             <div style={{ width:'60%', marginRight:'1rem' }}>
                 <a href={`/video/${video._id}`}  style={{ color:'gray' }}>
-                    <img style={{ width: '100%' }} src={`http://localhost/${video.thumbnail}`} alt="thumbnail" />
+                    <img style={{ width: '100%' }} src={`http://140.112.244.57:4000/${video.thumbnail}`} alt="thumbnail" />
                 </a>
             </div>
 
