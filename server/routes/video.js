@@ -5,7 +5,6 @@ const ffmpeg = require('fluent-ffmpeg');
 const { Video } = require('../models/Video');
 const { Subscribe } = require('../models/Subscriber');
 const { route } = require('./users');
-const { getVideoDurationInSeconds } = require('get-video-duration')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,9 +26,7 @@ const upload = multer({ storage: storage }).single('file');
 
 router.post('/uploadfiles', (req, res) => {
     upload(req, res, err => {
-        console.log("res", res);
         if(err){
-            console.log("err" , err);
             return res.json({success: false, err});
         }
         return res.json({success: true, filePath: res.req.file.path, fileName: res.req.file.filename});
@@ -38,21 +35,15 @@ router.post('/uploadfiles', (req, res) => {
 
 router.post('/thumbnail', (req, res) => {
     let thumbFilePath = "";
-    let fileDuration = "2.5";
+    let fileDuration = "";
 
-    console.log("fucking request", req.body.filePath);
-    /*
-    getVideoDurationInSeconds(req.body.filePath).then((duration) => {
-        console.log(duration);
-        fileDuration = duration;
-    })
-    */
     ffmpeg.ffprobe(req.body.filePath, (err, metadata) => {
         console.dir(metadata);
         console.log(metadata.format.duration);
         fileDuration = metadata.format.duration;
+        
     });
-    
+
     ffmpeg(req.body.filePath)
         .on('filenames', filenames => {
             console.log('Will generate ' + filenames.join(', '));

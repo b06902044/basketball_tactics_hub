@@ -1,5 +1,4 @@
 /node_modules
 package-lock.json
-/previous_uploads
-server/config/dev.js
+.env
 /uploads

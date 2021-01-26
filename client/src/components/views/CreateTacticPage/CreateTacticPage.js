@@ -57,27 +57,20 @@ function CreateTacticPage() {
 
     function handlePointerDown(event, team, player){
         event.preventDefault();
-        console.log("down");
         const pos = [...position];
         pos[team][player].dragging = true;
         setPosition(pos);
     }
 
-    function handlePointerMove(event, team, player, mobile){
+    function handlePointerMove(event, team, player){
         event.preventDefault();
         if(!position[team][player].dragging)    return;
 
         console.log("mousemove")
         const pos = [...position];
         const CTM = document.getElementById("svg").getScreenCTM();
-        if(mobile){
-            pos[team][player].x = ((event.targetTouches[0] ? event.targetTouches[0].clientX : event.changedTouches[event.changedTouches.length-1].clientX) - CTM.e) / CTM.a;
-            pos[team][player].y = ((event.targetTouches[0] ? event.targetTouches[0].clientY : event.changedTouches[event.changedTouches.length-1].clinetY) - CTM.f) / CTM.d;
-        }
-        else{
-            pos[team][player].x = (event.clientX - CTM.e) / CTM.a;
-            pos[team][player].y = (event.clientY - CTM.f) / CTM.d;
-        }
+        pos[team][player].x = (event.clientX - CTM.e) / CTM.a;
+        pos[team][player].y = (event.clientY - CTM.f) / CTM.d;
         pos[team][player].hasMoved = true;
         setPosition(pos);
         
@@ -90,7 +83,6 @@ function CreateTacticPage() {
                                            className = "path" style = {{stroke: pos[team][player].color}} />
             setAnimation(ani);
         }
-        event.preventDefault();
     }
 
     function handlePointerUp(event, team, player){
@@ -138,9 +130,7 @@ function CreateTacticPage() {
     const player_section = position.map((team, team_id) => {
         return team.map((player , player_id) => {
             return (
-                <g className = "player_btn" data-draggable = "1" data-long-touchable = "1" data-on-top-when-touched = "1" 
-                    onTouchStart = {e => handlePointerDown(e, team_id, player_id)}  onTouchMove = {e => handlePointerMove(e, team_id, player_id, true)} onTouchEnd = {e => handlePointerUp(e, team_id, player_id)} 
-                    onMouseDown = {e => handlePointerDown(e, team_id, player_id)}  onMouseMove = {e => handlePointerMove(e, team_id, player_id, false)} onMouseUp = {e => handlePointerUp(e, team_id, player_id) }>
+                <g className = "player_btn" data-draggable = "1" data-long-touchable = "1" data-on-top-when-touched = "1" onMouseDown = {e => handlePointerDown(e, team_id, player_id)}  onMouseMove = {e => handlePointerMove(e, team_id, player_id)} onMouseUp = {e => handlePointerUp(e, team_id, player_id)} >
                     <PlayerBall x = {`${position[team_id][player_id].x}`} y = {`${position[team_id][player_id].y}`} color = {player.color} name = {player.name} ball = {player.ball} offset = {0}/>
                 </g>
             )
@@ -161,21 +151,15 @@ function CreateTacticPage() {
         setAnimation(ani);
     }
 
-    function handleControlPointMove(event, team, player, point, mobile){
+    function handleControlPointMove(event, team, player, point){
         event.preventDefault();
         if(!animation[team][player][point].dragging)    return;
 
         console.log("ctrlmousemove")
         const ani = [...animation];
         const CTM = document.getElementById("svg").getScreenCTM();
-        if(mobile){
-            ani[team][player][point].x = ((event.targetTouches[0] ? event.targetTouches[0].clientX : event.changedTouches[event.changedTouches.length-1].clientX) - CTM.e) / CTM.a;
-            ani[team][player][point].y = ((event.targetTouches[0] ? event.targetTouches[0].clientY : event.changedTouches[event.changedTouches.length-1].clientY) - CTM.f) / CTM.d;
-        }
-        else{
-            ani[team][player][point].x = (event.clientX - CTM.e) / CTM.a;
-            ani[team][player][point].y = (event.clientY - CTM.f) / CTM.d;
-        }
+        ani[team][player][point].x = (event.clientX - CTM.e) / CTM.a;
+        ani[team][player][point].y = (event.clientY - CTM.f) / CTM.d;
         
         ani[team][player].path = <path d = {`M${ani[team][player].x} ${ani[team][player].y} C${ani[team][player].ctrl_pt1.x} ${ani[team][player].ctrl_pt1.y},${ani[team][player].ctrl_pt2.x} ${ani[team][player].ctrl_pt2.y}, ${position[team][player].x} ${position[team][player].y}`}
                                            className = "path" style = {{stroke: ani[team][player].color}} />
@@ -196,8 +180,8 @@ function CreateTacticPage() {
         return team.filter(player => { return (player.path);}).map(player => {
             return (
                 <React.Fragment>
-                    <ControlPoint x = {player.ctrl_pt1.x} y = {player.ctrl_pt1.y} color = {player.color} onTouchStart = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt1")}  onTouchMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt1", true)} onTouchEnd = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt1")} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt1")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt1", false)} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt1")}/>
-                    <ControlPoint x = {player.ctrl_pt2.x} y = {player.ctrl_pt2.y} color = {player.color} onTouchStart = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt2")}  onTouchMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt2", true)} onTouchEnd = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt2")} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt2")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt2", false)} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt2")}/>
+                    <ControlPoint x = {player.ctrl_pt1.x} y = {player.ctrl_pt1.y} color = {player.color} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt1")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt1")} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt1")}/>
+                    <ControlPoint x = {player.ctrl_pt2.x} y = {player.ctrl_pt2.y} color = {player.color} onMouseDown = {e => handleControlPointDown(e, player.team, player.idx, "ctrl_pt2")}  onMouseMove = {e => handleControlPointMove(e, player.team, player.idx, "ctrl_pt2")} onMouseUp = {e => handleControlPointUp(e, player.team, player.idx, "ctrl_pt2")}/>
                 </React.Fragment> 
             )
         })
@@ -207,17 +191,15 @@ function CreateTacticPage() {
         if(end){
             setCurrentFrame(0);
             document.getElementById("svg").setCurrentTime(0);
-            document.getElementById("svg").pauseAnimations();
             setVideo(videoInfo.map((frame, frame_id) => {
                 return frame.map((player, player_id) => {
                     return (
                         <g>
                             <PlayerBall x = {0} y = {0} color = {player.color} ball = {player.ball} name = {player.name} offset = {2.5}/>
-                            
-                            <animate attributeName="visibility" to="hidden" begin = "0s" fill = "freeze"/>
+                            <set attributeName="visibility"  to = "hidden" begin = "0s"  fill="freeze" />
                             <animate id = {`vis${frame_id}p${player_id}`} dur={`1ms`} attributeName="visibility" from="hidden" to="visible" begin = {`${(frame_id) * frameRate}s`} repeatCount="0" fill="freeze" />
                             <animateMotion id = {`move${frame_id}p${player_id}`} path = {player.path} dur = {`${frameRate}s`} begin = {`vis${frame_id}p${player_id}.end`} fill = "freeze"/>
-                            {(frame_id === totalFrame - 1)? null : <animate attributeName="visibility" to="hidden" begin={`move${frame_id}p${player_id}.end`}  fill="freeze" />}
+                            {(frame_id === totalFrame - 1)? null : <set attributeName="visibility"  to="hidden" begin={`move${frame_id}p${player_id}.end`}  fill="freeze" />}
                         </g>
                     )
                 })
@@ -227,9 +209,9 @@ function CreateTacticPage() {
         setPlay(true);
         document.getElementById("svg").unpauseAnimations();
         if(timer === null){
-            //const t = setInterval(interval, frameRate * 1000);
-            //console.log("settimer", t);
-            //setTimer(t);
+            const t = setInterval(interval, frameRate * 1000);
+            console.log("settimer", t);
+            setTimer(t);
         }
     }
 
@@ -248,7 +230,7 @@ function CreateTacticPage() {
         setPlay(false);
         document.getElementById("svg").pauseAnimations();
         console.log(timer);
-        //clearInterval(timer);
+        clearInterval(timer);
         setTimer(null);
         console.log("cleartimer");
     }
@@ -257,7 +239,7 @@ function CreateTacticPage() {
         console.log("stop");
         console.log(timer);
         if(timer){
-            //clearInterval(timer);
+            clearInterval(timer);
             setTimer(null);
             console.log("cleartimer");
         }
@@ -266,19 +248,19 @@ function CreateTacticPage() {
     }
 
     return (
-        <div className = "" style = {{width: "100%", height: `${viewSize.windowHeight}px` , overflow: "hidden", position: "fixed"}}>
-                <div id = "control-btn-section" className = "d-flex" style = {{padding: `0 ${viewSize.windowWidth * 0.15}px`, margin: "0 0"}}>
+        <div className = "my-3" style = {{width: "100%", height: `${viewSize.windowHeight}px`}}>
+                <div id = "control-btn-section" className = "d-flex" style = {{padding: `0 ${viewSize.windowWidth * 0.15}px`, margin: "15px 0"}}>
                     {end?   <h3 className = "align-self-center">{totalFrame}</h3>
                                 :
                             <h3 className = "align-self-center">{`${currentFrame} /  ${totalFrame}`}</h3>         
                     }
                     {play? 
-                    <FaPause className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {handlePause}/>
+                    <FaPause className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {handlePause}/>
                         :
-                    <FaPlay className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {handlePlay}/>
+                    <FaPlay className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {handlePlay}/>
                     }
-                    <FaStop className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {handleStop} />
-                    <FaPlus className = "control-btn align-self-center" size = {25 * viewSize.courtHeight / 500} onClick = {increaseCurrentFrame}/>
+                    <FaStop className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {handleStop} />
+                    <FaPlus className = "control-btn align-self-center" size = {30 * viewSize.courtHeight / 500} onClick = {increaseCurrentFrame}/>
                 </div>
                 <svg viewBox = {`0 0 ${viewSize.courtWidth} ${viewSize.courtHeight}`} id = "svg" >
                     <image href = {court} x = "0" y = "0" width = {`${viewSize.courtWidth}px`} height = {`${viewSize.courtHeight * 0.8}px`} />
